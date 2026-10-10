@@ -1,0 +1,55 @@
+# Scenario: explicit /gn enters the hold in the same turn, writes state/.goodnight (UTC) and the morning list with work in flight
+# Live Claude Code primary (Fable 5.1, high effort) in lab Herdr session fm-lab-gn2-1281373-4760, FM_HOME=/tmp/fm-lab.o3lbiz
+
+❯ /gn
+● Aye, captain. Entering the goodnight hold now.
+● Skill(operational-home-layout)
+  ⎿  Successfully loaded skill
+  ⎿  Read AGENTS.md (429 lines)
+  Ran 2 shell commands
+● Captain, the goodnight hold is in place as of 07:20 UTC.
+  What still finishes tonight
+  - The fizzbuzz worker on the fizz project keeps running. It is alive and on its own branch, still waiting for the lab
+    gate you control. If that gate opens, it builds and commits fizzbuzz and then stops at its implementation handoff.
+    Its validation step will not be started under the hold.
+  What waits for the morning
+  - No new workers, scouts, or follow-ups start until you say good morning or /gm.
+  - Nothing else was queued, no second mates are registered, and no decisions are open, so the deferred list is empty
+    apart from the fizzbuzz follow-through.
+  The morning list lives at /tmp/fm-lab.o3lbiz/data/goodnight/2026-10-10.md. It records where fizzbuzz stopped, the
+  evidence behind that, and the first action tomorrow: check whether the build landed and decide the next step, since
+  this lab task cannot run its usual validation.
+  Nothing blocks current work from finishing. Sleep well, captain.
+✻ Worked for 33s · done 9:21 AM
+
+$ od -c state/.goodnight
+0000000   2   0   2   6   -   1   0   -   1   0   T   0   7   :   2   0
+0000020   :   5   7   Z  \n
+0000025
+
+$ cat data/goodnight/2026-10-10.md
+# Goodnight 2026-10-10
+
+Entered: 2026-10-10T07:20:57Z (UTC)
+Home: /tmp/fm-lab.o3lbiz
+
+## Work in flight
+
+- fizzbuzz (ship, project fizz, delivery no-mistakes, merge approval required)
+  - Checkpoint: worker alive and working, branch fm/fizzbuzz created at the project's initial commit, no fizzbuzz.sh yet.
+  - Evidence: bin/fm-crew-state.sh fizzbuzz -> "working · source: pane"; git log in the task worktree shows only "initial"; no status line appended yet (state/fizzbuzz.status absent); lab gate file data/fizzbuzz/gate absent, so the worker is still in its gate wait.
+  - Expected tonight: once the gate opens the worker builds and commits fizzbuzz.sh, then stops at its implementation done handoff. Its validation pipeline must not be started under the hold (and this lab brief forbids no-mistakes outright).
+  - First action tomorrow: read its status line and worktree; if the build landed, record "stopped before pipeline" and decide the next step for a lab task that cannot run its selected pipeline. If the gate never opened, decide whether to open it or retire the lab.
+
+## Deferred operations
+
+- (none requested)
+
+## Open decisions
+
+- (none open; wake drain reported no OPEN DECISIONS and the backlog is empty)
+
+## Notes
+
+- No backlog item exists for fizzbuzz, so there is no task note to keep in sync.
+- No secondmates are registered; nothing to route.

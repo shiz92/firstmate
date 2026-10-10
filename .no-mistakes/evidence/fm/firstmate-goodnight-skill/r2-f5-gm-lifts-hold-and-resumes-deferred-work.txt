@@ -1,0 +1,91 @@
+# Re-run scenario F5: explicit /gm lifts the hold in the same turn, retains the morning list, reconciles the deferred item, and new dispatch resumes
+❯ /gm
+● Skill(operational-home-layout)
+  ⎿  Successfully loaded skill
+  ⎿  Read AGENTS.md (429 lines)
+  Listed 1 directory, ran 1 shell command
+● Goodnight is lifted and the morning list is kept. Now checking the CONTRIBUTING item against current records before
+  starting it.
+  Ran 1 shell command
+● Skill(harness-adapters)
+  ⎿  Successfully loaded skill
+  Ran 5 shell commands
+● Captain, goodnight is off. I'm writing the worker's instructions for the fizz CONTRIBUTING note now.
+  Read 1 file, ran 1 shell command
+● Update(<LAB>/data/fizz-fizz-add-a-contributing-note-3e/brief.md)
+  ⎿  Added 5 lines, removed 2 lines
+       2
+       3  # Task
+       4  ## Captain's intent
+       5 -{TASK}
+       5 +Add a CONTRIBUTING note to the fizz project.
+       6
+       7  ## Firstmate spec
+       8 -{FIRSTMATE_SPEC}
+       8 +- fizz currently contains only `README.md` ("Scratch project for the goodnight lab.").
+       9 +- Add a short `CONTRIBUTING.md` at the repository root with brief, accurate guidance for contributing
+         +to this repository (for example: open a branch, keep changes small, open a pull request for review).
+      10 +- Do not invent build, test, or tooling commands the repository does not have.
+      11 +- Out of scope: changes to `README.md` or any other file.
+      12
+      13  # Herdr lifecycle declaration - NOT ENABLED
+      14  **HARD SAFETY GATE:** this scaffold cannot inspect the task text filled in above.
+  ⎿  Allowed by auto mode classifier
+  Ran 4 shell commands
+● Captain, the worker for the CONTRIBUTING note has started. I'm checking a warning it printed at launch, then
+  confirming it's actually working.
+  Searched for 1 pattern, ran 2 shell commands
+● That line was just a notice: the launch went ahead because this is the marked test home. Now confirming the worker
+  picked up its instructions.
+  Ran 2 shell commands
+● The worker already finished the note and committed it on its branch. Next step is starting the review pipeline, so
+  I'm loading that procedure and collecting the worker's notification.
+  Ran 1 shell command
+● Skill(validation-supervision)
+  ⎿  Successfully loaded skill
+  Searched for 1 pattern, ran 3 shell commands
+● The worker accepted the pipeline command and is running it. Updating the task's note so it no longer says "deferred".
+  Ran 5 shell commands
+● Captain, goodnight is off, and the CONTRIBUTING note you asked for overnight has started.
+  - Goodnight: lifted, so new work can start again. I kept the morning list at
+    <LAB>/data/goodnight/2026-10-10.md.
+  - fizz CONTRIBUTING note: before starting it I confirmed nothing had been started overnight. The worker has already
+    written and committed CONTRIBUTING.md on its own branch. It has four short steps:
+    a. Branch off main.
+    b. Keep changes small.
+    c. Open a pull request against main and ask for a review.
+    d. Don't push directly to main.
+    It names no build or test commands, because fizz has none. No other files were changed.
+  - Now: the change is going through the full review pipeline. When its checks pass I'll bring you the pull request
+    link, and you approve the merge.
+  Nothing else is queued and no decisions are waiting on you.
+✻ Crunched for 2m 2s · done 9:48 AM
+
+$ ls state/.goodnight
+ls: cannot access '<LAB>/state/.goodnight': No such file or directory
+$ ls data/goodnight/   # list retained
+2026-10-10.md
+$ grep -E "^(window|worktree|harness|kind|mode|backend)=" state/fizz-fizz-add-a-contributing-note-3e.meta   # deferred task spawned after the lift
+window=fm-lab-gn3-1621207-20255:w1:p2
+worktree=/home/nicolas/.treehouse/fizz-692e5d/1/fizz
+harness=claude
+kind=ship
+mode=no-mistakes
+backend=herdr
+
+$ cat data/goodnight/2026-10-10.md
+# Goodnight morning list - 2026-10-10
+
+Hold entered 2026-10-10T07:43:30Z (state/.goodnight).
+
+## Work in flight
+
+(none - no recorded direct reports in state/*.meta and no backlog at entry)
+
+## Deferred operations
+
+- fizz-fizz-add-a-contributing-note-3e - add a CONTRIBUTING note to the fizz project (captain request during the hold; queued in backlog, not dispatched; no-mistakes, yolo off). First action after /gm: write the ship brief and spawn it.
+
+## Open decisions
+
+(none)

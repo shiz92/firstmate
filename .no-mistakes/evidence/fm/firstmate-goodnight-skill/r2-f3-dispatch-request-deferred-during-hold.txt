@@ -1,0 +1,61 @@
+# Re-run scenario F3: during the hold, a captain request for new work is captured durably (backlog + morning list) and not dispatched
+❯ Please dispatch a task to add a CONTRIBUTING note to the fizz project.
+  Ran 2 shell commands
+● Update(<LAB>/data/goodnight/2026-10-10.md)
+  ⎿  File must be read first
+  Read 1 file
+● Update(<LAB>/data/goodnight/2026-10-10.md)
+  ⎿  Added 1 line, removed 1 line
+       8
+       9  ## Deferred operations
+      10
+      11 -(none)
+      11 +- fizz-fizz-add-a-contributing-note-3e - add a CONTRIBUTING note to the fizz project (captain request
+         +during the hold; queued in backlog, not dispatched; no-mistakes, yolo off). First action after /gm: wr
+         +ite the ship brief and spawn it.
+      12
+      13  ## Open decisions
+      14
+  ⎿  Allowed by auto mode classifier
+● Captain, I haven't started it. The goodnight hold is still on, and while it's on I don't start new work. There's no
+  exception for a single task.
+  I've saved it for the morning:
+  - Backlog: queued as fizz-fizz-add-a-contributing-note-3e, "fizz: add a CONTRIBUTING note".
+  - Morning list: added under the put-off items in <LAB>/data/goodnight/2026-10-10.md. The first step in
+    the morning is to write the worker's instructions and start it.
+  - How it'll ship: the fizz project's usual way. It goes through the full review pipeline to a PR, then waits for your
+    approval before anything merges.
+  If you want it started tonight, send /gm. That lifts the hold for the whole fleet, not just this task, and I'll start
+  this one straight away. Otherwise it'll be first up when you're back.
+✻ Baked for 22s · done 9:44 AM
+
+$ ls state/*.meta   # no task was spawned
+ls: cannot access '<LAB>/state/*.meta': No such file or directory
+$ herdr workspace list (lab)
+["primary","firstmate"]
+
+$ cat data/goodnight/2026-10-10.md
+# Goodnight morning list - 2026-10-10
+
+Hold entered 2026-10-10T07:43:30Z (state/.goodnight).
+
+## Work in flight
+
+(none - no recorded direct reports in state/*.meta and no backlog at entry)
+
+## Deferred operations
+
+- fizz-fizz-add-a-contributing-note-3e - add a CONTRIBUTING note to the fizz project (captain request during the hold; queued in backlog, not dispatched; no-mistakes, yolo off). First action after /gm: write the ship brief and spawn it.
+
+## Open decisions
+
+(none)
+
+$ cat data/backlog.md
+# Backlog
+
+## In flight
+## Queued
+- [ ] fizz-fizz-add-a-contributing-note-3e - fizz: add a CONTRIBUTING note (repo: fizz) (kind: ship) (since 2026-10-10)
+  Captain's ask (2026-10-10, during goodnight hold): add a CONTRIBUTING note to the fizz project. Delivery: no-mistakes, yolo off (registry standing posture). Deferred: requested while goodnight was active; not dispatched. First action after /gm: write the ship brief and spawn.
+## Done

@@ -1,0 +1,36 @@
+# Re-run (Test attempt 2) scenario A: fresh dispatch under goodnight is refused with exit 76 before any allocation
+# target commit 0dd6fd8; FM_HOME=lab home; backend=herdr; HERDR_SESSION=named fm-lab-* session
+$ cat state/.goodnight
+2026-10-10T07:42:16Z
+$ herdr workspace list (lab) before:
+["primary"]
+
+$ bin/fm-spawn.sh fizzbuzz projects/fizz --mode no-mistakes --yolo off --harness claude
+fm-gate-refuse: gate agent lifecycle permitted only against lab home <LAB2>
+deferred: goodnight is active (<LAB2>/state/.goodnight); new dispatch waits for /goodmorning or /gm
+exit=76
+
+$ bin/fm-spawn.sh probe projects/fizz --scout --harness claude
+fm-gate-refuse: gate agent lifecycle permitted only against lab home <LAB2>
+deferred: goodnight is active (<LAB2>/state/.goodnight); new dispatch waits for /goodmorning or /gm
+exit=76
+
+$ bin/fm-spawn.sh nightmate --secondmate --harness claude
+fm-gate-refuse: gate agent lifecycle permitted only against lab home <LAB2>
+deferred: goodnight is active (<LAB2>/state/.goodnight); new dispatch waits for /goodmorning or /gm
+exit=76
+
+$ bin/fm-spawn.sh fizzbuzz=projects/fizz later=projects/fizz --mode no-mistakes --yolo off --harness claude
+fm-gate-refuse: gate agent lifecycle permitted only against lab home <LAB2>
+deferred: goodnight is active (<LAB2>/state/.goodnight); new dispatch waits for /goodmorning or /gm
+exit=76
+
+$ ls -A state/
+.goodnight
+$ herdr workspace list (lab) after:
+["primary"]
+$ git -C projects/fizz worktree list
+<LAB2>/projects/fizz 821ae59 [main]
+$ treehouse pool for this project:
+base  main  (repository default)
+🌳 No worktrees in pool.

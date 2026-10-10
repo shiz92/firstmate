@@ -1,0 +1,25 @@
+# Scenario: under goodnight, a recorded in-flight task (live claude worker) can be relaunched to finish; fresh dispatch stays refused
+$ cat state/.goodnight
+2026-10-10T07:18:01Z
+$ herdr agent get w2:p2 (before)
+{"agent":"claude","agent_status":"working","pane_id":"w2:p2"}
+
+$ bin/fm-control.sh fizzbuzz relaunch --note 'goodnight lab: relaunch to finish the build already in hand'
+fm-gate-refuse: gate agent lifecycle permitted only against lab home /tmp/fm-lab.o3lbiz
+fm-gate-refuse: gate agent lifecycle permitted only against lab home /tmp/fm-lab.o3lbiz
+relaunched fizzbuzz harness=claude from=claude model=sonnet effort=default backend=herdr endpoint=fm-lab-gn2-1281373-4760:w2:p2 worktree=/home/nicolas/.treehouse/fizz-6f8dde/1/fizz
+exit=0
+
+$ grep -E '^(window|worktree|harness)=' state/fizzbuzz.meta   # after
+window=fm-lab-gn2-1281373-4760:w2:p2
+worktree=/home/nicolas/.treehouse/fizz-6f8dde/1/fizz
+harness=claude
+$ ls state/.goodnight
+/tmp/fm-lab.o3lbiz/state/.goodnight
+
+$ bin/fm-spawn.sh later projects/fizz --mode no-mistakes --yolo off --harness claude --model sonnet   # fresh dispatch, same hold
+fm-gate-refuse: gate agent lifecycle permitted only against lab home /tmp/fm-lab.o3lbiz
+deferred: goodnight is active (/tmp/fm-lab.o3lbiz/state/.goodnight); new dispatch waits for /goodmorning or /gm
+exit=76
+$ ls state/later.meta
+ls: cannot access '/tmp/fm-lab.o3lbiz/state/later.meta': No such file or directory

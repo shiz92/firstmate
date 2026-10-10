@@ -1,0 +1,46 @@
+# Re-run scenario E: the real bootstrap liveness sweep under goodnight keeps live secondmates classified as live, defers relaunch of a missing endpoint without recovery accounting, and recovers normally after lifting
+$ cat state/gonemate.meta   # registered secondmate whose Herdr endpoint is gone
+window=fm-lab-gn3-1621207-20255:w9:p9
+kind=secondmate
+harness=claude
+home=<LAB2>/missing-mate-home
+backend=herdr
+herdr_session=fm-lab-gn3-1621207-20255
+herdr_workspace_id=w9
+herdr_tab_id=w9:t9
+herdr_pane_id=w9:p9
+$ cat state/livemate.meta   # registered secondmate pointing at a live Claude pane in the lab
+window=fm-lab-gn3-1621207-20255:w2:p2
+kind=secondmate
+harness=claude
+home=<LAB2>/live-mate-home
+backend=herdr
+herdr_session=fm-lab-gn3-1621207-20255
+herdr_workspace_id=w2
+herdr_tab_id=w2:t2
+herdr_pane_id=w2:p2
+$ cat state/.goodnight
+2026-10-10T07:44:02Z
+
+$ FM_BOOTSTRAP_VERBOSE_FACTS=1 FM_BOOTSTRAP_NETWORK=only bin/fm-bootstrap.sh | rg SECONDMATE_LIVENESS|BOOTSTRAP_INFO   # run 1, hold active
+SECONDMATE_LIVENESS: secondmate gonemate: skipped: goodnight hold active; relaunch deferred
+BOOTSTRAP_INFO: secondmate livemate already live (backend=herdr)
+$ ls state/.secondmate-relaunch-*
+(no relaunch ledger or bound marker)
+
+# run 2, hold active
+SECONDMATE_LIVENESS: secondmate gonemate: skipped: goodnight hold active; relaunch deferred
+BOOTSTRAP_INFO: secondmate livemate already live (backend=herdr)
+$ ls state/.secondmate-relaunch-*
+(no relaunch ledger or bound marker)
+$ herdr pane get w2:p2   # live mate's endpoint untouched
+{"pane_id":"w2:p2","agent":"claude","agent_status":"working"}
+
+$ rm state/.goodnight   # lift
+# run 3, after lift
+SECONDMATE_LIVENESS: secondmate gonemate: respawn failed after recorded endpoint confidently missing: fm-gate-refuse: gate agent lifecycle permitted only against lab home <LAB2>
+BOOTSTRAP_INFO: secondmate livemate already live (backend=herdr)
+$ cat state/.secondmate-relaunch-gonemate
+1791618281	attempt
+1791618282	failed
+# The post-lift respawn failure is the deliberately absent fixture home (missing-mate-home), not the hold.

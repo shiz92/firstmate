@@ -1,0 +1,39 @@
+# Re-run scenario C: under goodnight, a recorded in-flight task (live Claude worker) is relaunched through fm-control to finish its work; fresh dispatch stays refused
+$ cat state/.goodnight
+2026-10-10T07:44:02Z
+$ herdr pane get w2:p2 (before)
+{"pane_id":"w2:p2","agent":"claude","agent_status":"working"}
+$ grep -E "^(window|worktree|harness)=" state/fizzbuzz.meta   # before
+window=fm-lab-gn3-1621207-20255:w2:p2
+worktree=/home/nicolas/.treehouse/fizz-6a7347/1/fizz
+harness=claude
+
+$ bin/fm-control.sh fizzbuzz relaunch --note 'goodnight lab: relaunch to finish the build already in hand'
+fm-gate-refuse: gate agent lifecycle permitted only against lab home <LAB2>
+fm-gate-refuse: gate agent lifecycle permitted only against lab home <LAB2>
+●━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+●  WATCHER DOWN - SUPERVISION IS OFF
+●  1 task(s) in flight, but no watcher has a fresh beacon (last beat: never, grace 300s).
+●  Trust the emitted supervision protocol for this harness; do not use shell & for watcher repair.
+●  This is a supervision warning only; the guarded operation WILL still run.
+●  watcher supervision needs Stop-owned automatic recovery; inspect the hook registration and startup status before ending the turn.
+●━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+notice: fizzbuzz ships mode=local-only while the standing posture for fizz is no-mistakes - less rigor than the captain's standing posture; proceed only on a current explicit captain instruction or an intake judgment you can state
+relaunched fizzbuzz harness=claude from=claude model=sonnet effort=default backend=herdr endpoint=fm-lab-gn3-1621207-20255:w2:p2 worktree=/home/nicolas/.treehouse/fizz-6a7347/1/fizz
+exit=0
+
+$ grep -E "^(window|worktree|harness)=" state/fizzbuzz.meta   # after
+window=fm-lab-gn3-1621207-20255:w2:p2
+worktree=/home/nicolas/.treehouse/fizz-6a7347/1/fizz
+harness=claude
+$ herdr pane get w2:p2 (after)
+{"pane_id":"w2:p2","agent":"claude","agent_status":"done"}
+$ ls state/.goodnight
+<LAB2>/state/.goodnight
+
+$ bin/fm-spawn.sh later projects/fizz --mode local-only --yolo off --harness claude --model sonnet   # fresh dispatch, same hold
+fm-gate-refuse: gate agent lifecycle permitted only against lab home <LAB2>
+deferred: goodnight is active (<LAB2>/state/.goodnight); new dispatch waits for /goodmorning or /gm
+exit=76
+$ ls state/later.meta
+ls: cannot access '<LAB2>/state/later.meta': No such file or directory

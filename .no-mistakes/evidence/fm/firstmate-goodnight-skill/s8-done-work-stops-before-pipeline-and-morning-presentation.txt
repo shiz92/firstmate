@@ -1,0 +1,71 @@
+# Scenario: done work under the hold stops before its validation pipeline; session start surfaces the hold and morning list; ordinary chat does not lift it
+# Live Claude Code primary session 2 (Fable 5.1, high) launched from a genuine checkout of 0dd6fd8 at FM_HOME=/tmp/fm-lab.o3lbiz; worker fizzbuzz finished at 07:22:54Z while the hold (entered 07:20:57Z) was active
+
+## GOODNIGHT section of the SessionStart digest the primary received (from its Claude transcript):
+GOODNIGHT
+--------------------------------------------------------------------------------
+active since 2026-10-10T07:20:57Z; morning list: /tmp/fm-lab.o3lbiz/data/goodnight/2026-10-10.md
+Load /goodnight and read the morning list. Ask whether to lift the hold with /goodmorning; until then it remains active.
+
+## Primary turn:
+❯ Hi, I'm back at the keyboard. Where do things stand?
+● Welcome back, captain. Reading the full session-start digest first, then I'll give you the picture.
+  Read 1 file
+● Skill(goodnight)
+  ⎿  Successfully loaded skill
+  Ran 5 shell commands
+● Captain, here is where things stand. The fleet is still under the goodnight hold you entered this morning at 07:20
+  UTC, and nothing moved past what the hold allows.
+  Fizzbuzz implementation is built and parked. The worker added fizzbuzz.sh, committed it on the task branch, and left
+  the isolated copy clean. It stopped there as the hold requires. Its instructions forbid the project's usual review
+  pipeline, so landing it needs a call from you: land the branch another way, or treat it as a finished lab exercise
+  and clean it up.
+  One task is waiting to start. The CONTRIBUTING note for the fizz project is queued with its instructions already
+  written. You asked for it during the hold, so it was deferred rather than dispatched. It starts as soon as the hold
+  lifts.
+  No open decisions, no failures, no secondmates. The morning list is recorded at data/goodnight/2026-10-10.md and I
+  updated it with the fizzbuzz checkpoint just now.
+  One housekeeping note: background monitoring reports it has not checked in since this session opened. The automatic
+  re-arm at turn end should restore it, and I'll flag it if it does not.
+  Do you want me to lift the hold now with /gm? That resumes dispatch fleet-wide, starting with the CONTRIBUTING note.
+  The fizzbuzz landing question stands either way.
+✻ Cogitated for 44s · done 9:31 AM
+
+$ cat state/fizzbuzz.status
+done [at=1791616974]: fizzbuzz.sh added and committed on fm/fizzbuzz
+$ ls state/fizzbuzz.inbox (no /no-mistakes instruction was sent)
+/tmp/fm-lab.o3lbiz/state/fizzbuzz.inbox:
+handled
+
+/tmp/fm-lab.o3lbiz/state/fizzbuzz.inbox/handled:
+$ cat state/.goodnight   # still active
+2026-10-10T07:20:57Z
+
+$ cat data/goodnight/2026-10-10.md
+# Goodnight 2026-10-10
+
+Entered: 2026-10-10T07:20:57Z (UTC)
+Home: /tmp/fm-lab.o3lbiz
+
+## Work in flight
+
+- fizzbuzz (ship, project fizz, delivery no-mistakes, merge approval required)
+  - Checkpoint: worker alive and working, branch fm/fizzbuzz created at the project's initial commit, no fizzbuzz.sh yet.
+  - Evidence: bin/fm-crew-state.sh fizzbuzz -> "working · source: pane"; git log in the task worktree shows only "initial"; no status line appended yet (state/fizzbuzz.status absent); lab gate file data/fizzbuzz/gate absent, so the worker is still in its gate wait.
+  - Expected tonight: once the gate opens the worker builds and commits fizzbuzz.sh, then stops at its implementation done handoff. Its validation pipeline must not be started under the hold (and this lab brief forbids no-mistakes outright).
+  - Morning check 2026-10-10 (session start): status line `done [at=1791616974]: fizzbuzz.sh added and committed on fm/fizzbuzz`; worktree clean with commit ffd15a1 "Add fizzbuzz.sh" on top of the initial commit; endpoint still alive. Stopped before pipeline.
+  - First action tomorrow: decide the next step for a lab task whose brief forbids its selected no-mistakes pipeline (land it another way, or retire the lab and clean up); do not start a pipeline under the hold.
+
+## Deferred operations
+
+- later (ship, project fizz, delivery no-mistakes, merge approval required): the captain asked for dispatch at 2026-10-10 ~07:22 UTC while the hold was active; brief already written at data/later/brief.md; backlog item `later` filed.
+  - First action to resume: lift the hold with /gm, then `bin/fm-spawn.sh later projects/fizz --mode no-mistakes --yolo off` (project clone under this home; branch prefix fm/ is the default, no flag needed) after the usual dispatch-profile and backend checks.
+
+## Open decisions
+
+- (none open; wake drain reported no OPEN DECISIONS and the backlog is empty)
+
+## Notes
+
+- No backlog item exists for fizzbuzz, so there is no task note to keep in sync.
+- No secondmates are registered; nothing to route.

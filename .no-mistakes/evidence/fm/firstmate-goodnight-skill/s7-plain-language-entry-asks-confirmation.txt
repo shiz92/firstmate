@@ -1,0 +1,27 @@
+# Scenario: plain-language 'going to bed' loads goodnight but only asks one confirming question; the hold is NOT entered in that turn
+# Live Claude Code primary (Fable 5.1, high effort) in lab Herdr session fm-lab-gn2-1281373-4760, FM_HOME=/tmp/fm-lab.o3lbiz
+
+❯ I'm going to bed soon, so let's wind the fleet down for tonight.
+● Captain, that reads as a goodnight request, so I'll load the goodnight procedure and get this session's startup
+  digest before touching anything.
+● Skill(goodnight)
+  ⎿  Successfully loaded skill
+  Listed 1 directory, ran 4 shell commands
+● Captain, here is where the fleet stands before I set anything.
+  Only one piece of work is running: the fizzbuzz worker on the fizz project. It is alive and on its own branch, but it
+  has not implemented anything yet because it is still waiting for the lab gate you control. Nothing else is queued,
+  no second mates are registered, and no decisions are open.
+  If I enter goodnight now, this is what happens:
+  - That worker keeps going. Once the gate opens it builds and commits fizzbuzz, then stops at its implementation
+    handoff. Its validation pipeline will not be started tonight, so starting it becomes the first action tomorrow.
+  - Nothing new starts. No new workers, scouts, or follow-ups until you say good morning.
+  - The morning list gets written under the home's data directory so tomorrow picks up exactly where this stopped.
+  Captain, do you want me to enter the goodnight hold now on those terms? A plain "yes" or "/gn" does it.
+✻ Worked for 47s · done 9:20 AM
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+❯
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+$ ls state/.goodnight data/goodnight   # immediately after the turn
+ls: cannot access '/tmp/fm-lab.o3lbiz/state/.goodnight': No such file or directory
+ls: cannot access '/tmp/fm-lab.o3lbiz/data/goodnight': No such file or directory

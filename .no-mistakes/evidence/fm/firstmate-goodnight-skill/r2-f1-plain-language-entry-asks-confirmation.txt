@@ -1,0 +1,27 @@
+# Re-run scenario F1: live Claude Code primary (Opus 5.5) in a named fm-lab-* Herdr session with FM_HOME=lab home.
+# A plain-language bedtime phrase loads the goodnight skill but only asks one confirming question; the hold is not entered.
+❯ I'm going to bed soon, let's wind the fleet down for tonight.
+  Listed 1 directory, ran 2 shell commands
+● Skill(goodnight)
+  ⎿  Successfully loaded skill
+● Captain, before I put the fleet to bed I need your word, since you said it in plain words rather than with the
+  goodnight command.
+  Where things stand: nothing is running. There's no work in progress, no queued work, no second mates, and no open
+  decisions. The only registered project is the scratch fizz project, and it's idle.
+  If you confirm, I'll put the hold on now. That means:
+  - New work waits. I won't start any new workers, scouts or second mates until you lift the hold with /gm (or
+    /goodmorning). There are no one-off exceptions while it's on.
+  - Nothing gets stopped. Nothing is running tonight, so there's nothing to finish or interrupt.
+  - A morning list gets created at data/goodnight/2026-10-10.md in this home, even though it will start empty. Anything
+    you ask for tonight gets written there and started in the morning instead of now.
+  - Your machine is untouched. The hold only covers scheduling. It doesn't suspend or shut anything down.
+  Shall I put the fleet to bed for the night?
+✻ Sautéed for 37s · done 9:42 AM
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+❯
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  ⏵⏵ auto mode on (shift+tab to cycle) · ← 2 agents
+
+$ ls state/.goodnight data/goodnight   # immediately after the turn
+ls: cannot access '<LAB>/state/.goodnight': No such file or directory
+ls: cannot access '<LAB>/data/goodnight': No such file or directory

@@ -1,0 +1,22 @@
+# Re-run scenario D: the real session-start digest surfaces an active goodnight hold, its entry-date morning list, and asks to lift; it never clears the hold
+$ printf "2026-10-08T23:59:00Z\n" > state/.goodnight   # older entry date than today (2026-10-10)
+$ bin/fm-session-start.sh   (exit=0)  -- GOODNIGHT section:
+GOODNIGHT
+--------------------------------------------------------------------------------
+active since 2026-10-08T23:59:00Z; morning list: <LAB2>/data/goodnight/2026-10-08.md
+Load /goodnight and read the morning list. Ask whether to lift the hold with /goodmorning; until then it remains active.
+
+AFK
+$ ls state/.goodnight
+<LAB2>/state/.goodnight
+
+$ printf "bad timestamp\n" > state/.goodnight
+$ bin/fm-session-start.sh   (exit=0)  -- GOODNIGHT section:
+GOODNIGHT
+--------------------------------------------------------------------------------
+active; entry time unreadable, inspect morning lists under <LAB2>/data/goodnight/
+Load /goodnight and read the morning list. Ask whether to lift the hold with /goodmorning; until then it remains active.
+
+AFK
+$ ls state/.goodnight
+<LAB2>/state/.goodnight

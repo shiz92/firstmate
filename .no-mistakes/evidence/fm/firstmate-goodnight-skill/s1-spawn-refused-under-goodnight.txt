@@ -1,0 +1,35 @@
+# Scenario: fresh dispatch under goodnight is refused before allocation
+# lab FM_HOME=/tmp/fm-lab.o3lbiz  herdr lab session=fm-lab-gn-1113113-17755  backend=herdr (config/backend)
+$ cat state/.goodnight
+2026-10-09T19:20:37Z
+$ herdr workspace list (lab) before
+[]
+
+$ bin/fm-spawn.sh fizzbuzz projects/fizz --mode no-mistakes --yolo off --harness claude
+fm-gate-refuse: gate agent lifecycle permitted only against lab home /tmp/fm-lab.o3lbiz
+deferred: goodnight is active (/tmp/fm-lab.o3lbiz/state/.goodnight); new dispatch waits for /goodmorning or /gm
+exit=76
+
+$ bin/fm-spawn.sh probe projects/fizz --scout --harness claude
+fm-gate-refuse: gate agent lifecycle permitted only against lab home /tmp/fm-lab.o3lbiz
+deferred: goodnight is active (/tmp/fm-lab.o3lbiz/state/.goodnight); new dispatch waits for /goodmorning or /gm
+exit=76
+
+$ bin/fm-spawn.sh nightmate --secondmate --harness claude
+fm-gate-refuse: gate agent lifecycle permitted only against lab home /tmp/fm-lab.o3lbiz
+deferred: goodnight is active (/tmp/fm-lab.o3lbiz/state/.goodnight); new dispatch waits for /goodmorning or /gm
+exit=76
+
+$ bin/fm-spawn.sh fizzbuzz=projects/fizz later=projects/fizz --mode no-mistakes --yolo off --harness claude
+fm-gate-refuse: gate agent lifecycle permitted only against lab home /tmp/fm-lab.o3lbiz
+deferred: goodnight is active (/tmp/fm-lab.o3lbiz/state/.goodnight); new dispatch waits for /goodmorning or /gm
+exit=76
+
+$ ls state/ (task records)
+.goodnight
+$ herdr workspace list (lab) after
+[]
+$ herdr calls made by spawns:
+(none)
+$ git -C projects/fizz worktree list
+/tmp/fm-lab.o3lbiz/projects/fizz 5a4c105 [main]

@@ -1,0 +1,23 @@
+# Re-run scenario A2 (adversarial): a malformed or dangling goodnight record never means permission to dispatch
+$ cat state/.goodnight
+not a timestamp
+$ bin/fm-spawn.sh fizzbuzz projects/fizz --mode no-mistakes --yolo off --harness claude
+fm-gate-refuse: gate agent lifecycle permitted only against lab home <LAB2>
+deferred: goodnight is active (<LAB2>/state/.goodnight); new dispatch waits for /goodmorning or /gm
+exit=76
+
+$ : > state/.goodnight   # empty record
+$ bin/fm-spawn.sh probe projects/fizz --scout --harness claude
+fm-gate-refuse: gate agent lifecycle permitted only against lab home <LAB2>
+deferred: goodnight is active (<LAB2>/state/.goodnight); new dispatch waits for /goodmorning or /gm
+exit=76
+
+$ ls -l state/.goodnight   # dangling symlink
+lrwxrwxrwx <LAB2>/state/.goodnight -> /nonexistent/goodnight
+$ bin/fm-spawn.sh fizzbuzz projects/fizz --mode no-mistakes --yolo off --harness claude
+fm-gate-refuse: gate agent lifecycle permitted only against lab home <LAB2>
+deferred: goodnight is active (<LAB2>/state/.goodnight); new dispatch waits for /goodmorning or /gm
+exit=76
+
+$ ls -A state/
+.goodnight

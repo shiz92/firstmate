@@ -1,0 +1,25 @@
+# Re-run scenario B: with the goodnight marker removed (lifted), the same fresh dispatch proceeds and launches a real Claude worker in the lab Herdr session
+$ ls -A state/   # no .goodnight
+.inactive-outcome-reconcile
+.lock
+.lock-session
+.session-start-complete
+.startup-network.report
+.startup-network.status
+.startup-network.timings
+.trace-context-effective
+.wake-queue
+home-summary.json
+terminal-outcomes
+$ bin/fm-spawn.sh fizzbuzz projects/fizz --mode local-only --yolo off --harness claude --model sonnet
+fm-gate-refuse: gate agent lifecycle permitted only against lab home <LAB2>
+notice: fizzbuzz ships mode=local-only while the standing posture for fizz is no-mistakes - less rigor than the captain's standing posture; proceed only on a current explicit captain instruction or an intake judgment you can state
+spawned fizzbuzz harness=claude kind=ship mode=local-only yolo=off window=fm-lab-gn3-1621207-20255:w2:p2 worktree=/home/nicolas/.treehouse/fizz-6a7347/1/fizz
+exit=0
+$ grep -E "^(window|worktree|harness|kind|mode|backend)=" state/fizzbuzz.meta
+window=fm-lab-gn3-1621207-20255:w2:p2
+worktree=/home/nicolas/.treehouse/fizz-6a7347/1/fizz
+harness=claude
+kind=ship
+mode=local-only
+backend=herdr

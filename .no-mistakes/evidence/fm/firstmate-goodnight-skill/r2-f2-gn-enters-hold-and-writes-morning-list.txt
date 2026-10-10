@@ -1,0 +1,38 @@
+# Re-run scenario F2: explicit /gn on the live Claude primary enters the hold in the same turn, writes state/.goodnight (UTC timestamp + newline) and data/goodnight/<UTC date>.md
+❯ /gn
+● Skill(operational-home-layout)
+  ⎿  Successfully loaded skill
+  ⎿  Read AGENTS.md (429 lines)
+  Searched for 1 pattern, listed 1 directory, ran 2 shell commands
+● Captain, the fleet is in for the night. The hold went on at 07:43 UTC.
+  - Still running: nothing. There was no work in progress, no queued work and no second mates, so nothing needed
+    finishing or stopping.
+  - What waits: new workers, scouts and second mates won't start until you lift the hold. Anything you ask for before
+    then gets written down for the morning instead.
+  - Morning list: <LAB>/data/goodnight/2026-10-10.md. It's empty for now: nothing in progress, nothing put
+    off, no open decisions.
+  - Machine: not touched. Shutting down is up to you.
+  In the morning I'll show you that list and ask whether to lift the hold. /gm lifts it right away. Sleep well.
+✻ Brewed for 23s · done 9:43 AM
+
+$ od -c state/.goodnight
+0000000   2   0   2   6   -   1   0   -   1   0   T   0   7   :   4   3
+0000020   :   3   0   Z  \n
+0000025
+
+$ cat data/goodnight/2026-10-10.md
+# Goodnight morning list - 2026-10-10
+
+Hold entered 2026-10-10T07:43:30Z (state/.goodnight).
+
+## Work in flight
+
+(none - no recorded direct reports in state/*.meta and no backlog at entry)
+
+## Deferred operations
+
+(none)
+
+## Open decisions
+
+(none)

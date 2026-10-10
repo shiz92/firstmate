@@ -1,0 +1,49 @@
+# Scenario: a new dispatch request during the hold is captured durably (backlog + morning list) and not started
+# Live Claude Code primary in lab Herdr session fm-lab-gn2-1281373-4760, FM_HOME=/tmp/fm-lab.o3lbiz
+
+❯ One more thing: please dispatch the 'later' task on the fizz project now. Its brief is already written at
+  data/later/brief.md; delivery no-mistakes, yolo off.
+● Captain, I'll check that brief and record the request, but the goodnight hold you just set blocks new dispatch, so I
+  will not launch it tonight. Details follow.
+  Ran 6 shell commands
+● Captain, I did not dispatch the later task. The goodnight hold you set a few minutes ago blocks every new worker, and
+  there is no one-off exception to it. Launching it would also be refused by the dispatch tooling while the hold
+  stands.
+  What I did instead
+  - Confirmed the brief exists and that its posture matches the fizz project's standing setting: no-mistakes delivery,
+    merge approval required.
+  - Filed the work as a queued backlog item named later, with the project, delivery posture, and the brief location
+    recorded.
+  - Added it to the morning list at /tmp/fm-lab.o3lbiz/data/goodnight/2026-10-10.md under deferred operations, with the
+    exact first action to resume it.
+  Your two options
+  - Leave it. It is the first thing dispatched after you say good morning or /gm.
+  - Have it run tonight. Say /gm to lift the hold, I dispatch it at once, and you say /gn again to re-enter the hold.
+    The only side effect is that the fizzbuzz worker's validation step could also become eligible during that window,
+    though nothing starts it unless the worker reaches that point.
+  My recommendation is to leave it for the morning, since it is a one-sentence change with no urgency stated. Captain,
+  say the word either way.
+✻ Baked for 51s · done 9:22 AM
+
+$ ls state/later.meta
+ls: cannot access '/tmp/fm-lab.o3lbiz/state/later.meta': No such file or directory
+$ herdr workspace list (lab) labels
+["primary","firstmate"]
+  (primary = the lab primary's own workspace; firstmate = the home workspace holding only the fizzbuzz worker)
+
+$ cat data/backlog.md
+# Backlog
+
+## In flight
+## Queued
+- [ ] later - Add a CONTRIBUTING note to the fizz project (repo: fizz) (kind: ship) (since 2026-10-10)
+  Delivery no-mistakes, yolo off (registry posture, no deviation). Brief at data/later/brief.md. Captain asked for dispatch on 2026-10-10 during the goodnight hold; deferred to the morning list data/goodnight/2026-10-10.md. First action: lift the hold with /gm, then spawn.
+## Done
+
+$ sed -n '/## Deferred operations/,/## Open decisions/p' data/goodnight/2026-10-10.md
+## Deferred operations
+
+- later (ship, project fizz, delivery no-mistakes, merge approval required): the captain asked for dispatch at 2026-10-10 ~07:22 UTC while the hold was active; brief already written at data/later/brief.md; backlog item `later` filed.
+  - First action to resume: lift the hold with /gm, then `bin/fm-spawn.sh later projects/fizz --mode no-mistakes --yolo off` (project clone under this home; branch prefix fm/ is the default, no flag needed) after the usual dispatch-profile and backend checks.
+
+## Open decisions

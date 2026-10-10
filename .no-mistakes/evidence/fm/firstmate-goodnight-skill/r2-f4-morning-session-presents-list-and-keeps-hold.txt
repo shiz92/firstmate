@@ -1,0 +1,24 @@
+# Re-run scenario F4: a new Claude primary session (the next morning) with state/.goodnight present presents where work stopped and the morning list, asks whether to lift, and does not lift on a neutral greeting
+❯ Hi, I'm back.
+  Ran 5 shell commands
+● Captain, welcome back: I'm running the startup check for this goodnight lab home first, since the previous session in
+  this pane has ended.
+  Ran 1 shell command
+● Goodnight is active, so I'm loading its procedure before answering.
+● Skill(goodnight)
+  ⎿  Successfully loaded skill
+  Read 1 file
+● Captain, welcome back. Goodnight mode is still on, and saying hello doesn't switch it off by itself.
+  - Running overnight: nothing. No work was in progress when goodnight started at 07:43 UTC today, and none has started
+    since.
+  - Waiting for you: one item. You asked for a CONTRIBUTING note in the fizz project during goodnight. I queued it and
+    didn't start it. Once goodnight is lifted, I'll write the instructions for a worker and start it. It goes through
+    the full review pipeline, and you approve the merge.
+  - Decisions waiting on you: none.
+  The morning list is at <LAB>/data/goodnight/2026-10-10.md.
+  Do you want me to lift goodnight now and start the CONTRIBUTING note? Reply yes or /gm and I'll go ahead. Until then,
+  new work stays paused.
+✻ Baked for 48s · done 9:46 AM
+
+$ cat state/.goodnight   # after the turn
+2026-10-10T07:43:30Z

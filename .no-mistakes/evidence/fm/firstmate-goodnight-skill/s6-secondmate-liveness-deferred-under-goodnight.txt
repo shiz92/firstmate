@@ -1,0 +1,38 @@
+# Scenario: a registered secondmate whose Herdr endpoint is gone is not relaunched or ledgered during goodnight; recovery is eligible again after lifting
+$ cat state/nightmate.meta
+window=fm-lab-gn-1113113-17755:w9:p9
+kind=secondmate
+harness=claude
+home=/tmp/gnlab-ctl/nightmate-home
+backend=herdr
+herdr_session=fm-lab-gn-1113113-17755
+herdr_workspace_id=w9
+herdr_tab_id=w9:t9
+herdr_pane_id=w9:p9
+$ cat state/.goodnight
+2026-10-10T07:13:00Z
+
+$ FM_BOOTSTRAP_NETWORK=only bin/fm-bootstrap.sh | grep SECONDMATE_LIVENESS   # run 1, hold active
+SECONDMATE_LIVENESS: secondmate nightmate: skipped: goodnight hold active; relaunch deferred
+$ ls state/.secondmate-relaunch-nightmate*
+(no relaunch ledger or bound marker)
+
+$ FM_BOOTSTRAP_NETWORK=only bin/fm-bootstrap.sh | grep SECONDMATE_LIVENESS   # run 2, hold active
+SECONDMATE_LIVENESS: secondmate nightmate: skipped: goodnight hold active; relaunch deferred
+$ ls state/.secondmate-relaunch-nightmate*
+(no relaunch ledger or bound marker)
+$ herdr calls other than reads during the hold:
+(none)
+
+$ rm state/.goodnight   # lift
+$ FM_BOOTSTRAP_NETWORK=only bin/fm-bootstrap.sh | grep SECONDMATE_LIVENESS   # after lift
+SECONDMATE_LIVENESS: secondmate nightmate: respawn failed after recorded endpoint confidently missing: fm-gate-refuse: gate agent lifecycle permitted only against lab home /tmp/fm-lab.o3lbiz
+$ cat state/.secondmate-relaunch-nightmate
+1791616506	attempt
+1791616506	failed
+
+# The post-lift failure is the deliberately absent fixture home, not the hold (same spawn the sweep runs):
+$ FM_SPAWN_NO_GUARD=1 bin/fm-spawn.sh nightmate --secondmate
+fm-gate-refuse: gate agent lifecycle permitted only against lab home /tmp/fm-lab.o3lbiz
+error: firstmate home does not exist or is not a directory: /tmp/gnlab-ctl/nightmate-home
+exit=1
